@@ -17,13 +17,12 @@ object ZeroCopy extends App {
   val serverThread = new Thread(new Runnable() {
     override def run: Unit = {
       val sc = new ServerSocket(1234)
-      while(true) {
-        val s = sc.accept()
-        val reader = new BufferedReader(new InputStreamReader(s.getInputStream))
-        val blob = Stream.continually(reader.readLine()).takeWhile(_ != null)
-        System.out.println(blob)
-        s.close()
-      }
+      val s = sc.accept()
+      val reader = new BufferedReader(new InputStreamReader(s.getInputStream))
+      val blob = Stream.continually(reader.readLine()).takeWhile(_ != null)
+      System.out.println(blob)
+      s.close()
+      sc.close()
     }
   })
   serverThread.start()
